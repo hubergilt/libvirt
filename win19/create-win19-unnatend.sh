@@ -95,7 +95,7 @@ virt-install \
   --video          qxl \
   --noautoconsole
 
-# 5. Clean NEW_ISO
+# 5. Clean  WORK_DIR
 echo "[5/5] Clean WORK_DIR"
 rm -rf $WORK_DIR
 
