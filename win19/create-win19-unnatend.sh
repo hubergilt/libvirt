@@ -12,9 +12,12 @@ ANSWER_FILE="$(pwd)/autounattend.xml"
 NEW_ISO="$(pwd)/${VM_NAME}-unattended.iso"
 WORK_DIR="/tmp/${VM_NAME}-iso-work"
 DISK_PATH="/vms/${VM_NAME}.qcow2"
+NETKVM_SRC="$(pwd)/NetKVM"
+NETKVM_DST="$WORK_DIR/NetKVM"
 DISK_SIZE=50
 RAM=2048
 VCPUS=2
+NETWORK="lab-lan"
 
 # Dependency check
 for cmd in 7z genisoimage qemu-img virt-install; do
@@ -41,9 +44,17 @@ echo "[1/5] Extracting ISO..."
 rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
 7z x "$ORIG_ISO" -o"$WORK_DIR" -y > /dev/null
 
-# 2. Inject answer file
-echo "[2/5] Injecting autounattend.xml..."
+# 2. Inject answer file + VirtIO network driver
+echo "[2/5] Injecting autounattend.xml and NetKVM VirtIO driver..."
 cp "$ANSWER_FILE" "$WORK_DIR/autounattend.xml"
+
+if [ ! -d "$NETKVM_SRC" ]; then
+  echo "ERROR: NetKVM driver folder not found at $NETKVM_SRC"
+  echo "  Download virtio-win drivers from https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/"
+  echo "  and place the NetKVM/w10/amd64/ (or w2k19/amd64/) contents in ./NetKVM/"
+  exit 1
+fi
+cp -r "$NETKVM_SRC" "$NETKVM_DST"
 
 # 3. Rebuild bootable ISO
 echo "[3/5] Rebuilding ISO at $NEW_ISO ..."
@@ -79,14 +90,14 @@ virt-install \
   --boot           uefi \
   --disk           path="$DISK_PATH",format=qcow2,bus=sata \
   --cdrom          "$NEW_ISO" \
-  --network        network=default,model=virtio \
+  --network        network="$NETWORK",model=virtio \
   --graphics       spice \
   --video          qxl \
   --noautoconsole
 
 # 5. Clean NEW_ISO
-echo "[5/5] Clean NEW_ISO"
-rm -f $NEW_ISO
+echo "[5/5] Clean WORK_DIR"
+rm -rf $WORK_DIR
 
 echo ""
 echo "Done. VM is installing unattended (UEFI/GPT)."
