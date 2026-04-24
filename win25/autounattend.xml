@@ -101,7 +101,7 @@
           </Ipv4Settings>
           <Identifier>Ethernet Instance 0</Identifier>
           <UnicastIpAddresses>
-            <IpAddress wcm:action="add" wcm:keyValue="1">10.0.1.11/24</IpAddress>
+            <IpAddress wcm:action="add" wcm:keyValue="1">10.0.1.12/24</IpAddress>
           </UnicastIpAddresses>
           <Routes>
             <Route wcm:action="add">

@@ -47,7 +47,10 @@ Get-NetIPAddress -InterfaceIndex $ifIndex -AddressFamily IPv4 |
 # ── Step 3 — Verify connectivity to ad01 ─────────────────────
 Write-Host "[3/5] Verifying connectivity to ad01..." -ForegroundColor Cyan
 
-if (-not (Test-Connection -ComputerName '10.0.1.10' -Count 2 -Quiet)) {
+
+Start-Sleep -Seconds 10
+$ping = Test-Connection -ComputerName '10.0.1.10' -Count 2 -Quiet -ErrorAction SilentlyContinue
+if (-not $ping) {
     Write-Host "ERROR: Cannot reach ad01 at 10.0.1.10." -ForegroundColor Red
     Write-Host "       Ensure ad01 is running and promoted before continuing." -ForegroundColor Red
     exit 1
