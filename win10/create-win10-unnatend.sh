@@ -1,13 +1,13 @@
 #!/bin/bash
 # create-win10-unattended.sh
-# Windows 11 Pro unattended install — UEFI/GPT via q35.
+# Windows 10 Pro unattended install — UEFI/GPT via q35.
 # Requirements: p7zip-full, genisoimage, qemu-utils, virtinst, ovmf
 #   apt install p7zip-full genisoimage qemu-utils virtinst ovmf
 
 set -e
 
-VM_NAME="${1:-win11}"
-ORIG_ISO="/home/huber/Downloads/en-us_windows_11_consumer_editions_version_24h2_x64_dvd.iso"
+VM_NAME="${1:-win10}"
+ORIG_ISO="/home/huber/Downloads/en-us_windows_10_consumer_editions_version_22h2_updated_oct_2025_x64_dvd_38efd00d.iso"
 ANSWER_FILE="$(pwd)/autounattend.xml"
 NEW_ISO="$(pwd)/${VM_NAME}-unattended.iso"
 WORK_DIR="/tmp/${VM_NAME}-iso-work"
@@ -46,11 +46,10 @@ rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
 # 2. Inject answer file + VirtIO network driver
 echo "[2/5] Injecting autounattend.xml and NetKVM VirtIO driver..."
 cp "$ANSWER_FILE" "$WORK_DIR/autounattend.xml"
-cp "$ANSWER_FILE" "$WORK_DIR/sources/autounattend.xml"
 
 if [ ! -d "$NETKVM_SRC" ]; then
   echo "ERROR: NetKVM driver folder not found at $NETKVM_SRC"
-  echo "  Mount virtio-win.iso and copy the NetKVM/w11/amd64/ contents into ./NetKVM/"
+  echo "  Mount virtio-win.iso and copy the NetKVM/w10/amd64/ contents into ./NetKVM/"
   exit 1
 fi
 cp -r "$NETKVM_SRC" "$NETKVM_DST"
@@ -59,7 +58,7 @@ cp -r "$NETKVM_SRC" "$NETKVM_DST"
 echo "[3/5] Rebuilding ISO at $NEW_ISO ..."
 genisoimage \
   -iso-level 4 \
-  -l -R -J -joliet-long \
+  -l -R -J \
   -no-emul-boot \
   -b boot/etfsboot.com \
   -boot-load-size 8 \
@@ -84,7 +83,7 @@ virt-install \
   --name           "$VM_NAME" \
   --ram            "$RAM" \
   --vcpus          "$VCPUS" \
-  --os-variant     win11 \
+  --os-variant     win10 \
   --machine        q35 \
   --boot           uefi \
   --disk           path="$DISK_PATH",format=qcow2,bus=sata \

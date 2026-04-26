@@ -22,7 +22,7 @@
       <UserData>
         <AcceptEula>true</AcceptEula>
         <ProductKey>
-          <Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
+          <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
           <WillShowUI>Never</WillShowUI>
         </ProductKey>
       </UserData>
@@ -31,7 +31,7 @@
           <InstallFrom>
             <MetaData wcm:action="add">
               <Key>/IMAGE/NAME</Key>
-              <Value>Windows 11 Pro</Value>
+              <Value>Windows 10 Pro</Value>
             </MetaData>
           </InstallFrom>
           <InstallTo>
@@ -80,7 +80,7 @@
   <!-- SPECIALIZE -->
   <settings pass="specialize">
     <component language="neutral" name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
-      <ComputerName>WIN11</ComputerName>
+      <ComputerName>WIN10</ComputerName>
       <TimeZone>SA Pacific Standard Time</TimeZone>
     </component>
     <component language="neutral" name="Microsoft-Windows-TCPIP" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
@@ -93,7 +93,7 @@
           </Ipv4Settings>
           <Identifier>Ethernet Instance 0</Identifier>
           <UnicastIpAddresses>
-            <IpAddress wcm:action="add" wcm:keyValue="1">10.0.1.51/24</IpAddress>
+            <IpAddress wcm:action="add" wcm:keyValue="1">10.0.1.50/24</IpAddress>
           </UnicastIpAddresses>
           <Routes>
             <Route wcm:action="add">
