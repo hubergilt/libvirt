@@ -1,5 +1,5 @@
 #!/bin/bash
-# create-win11-unattended.sh
+# create-win10-unattended.sh
 # Windows 11 Pro unattended install — UEFI/GPT via q35.
 # Requirements: p7zip-full, genisoimage, qemu-utils, virtinst, ovmf
 #   apt install p7zip-full genisoimage qemu-utils virtinst ovmf
@@ -46,6 +46,7 @@ rm -rf "$WORK_DIR" && mkdir -p "$WORK_DIR"
 # 2. Inject answer file + VirtIO network driver
 echo "[2/5] Injecting autounattend.xml and NetKVM VirtIO driver..."
 cp "$ANSWER_FILE" "$WORK_DIR/autounattend.xml"
+cp "$ANSWER_FILE" "$WORK_DIR/sources/autounattend.xml"
 
 if [ ! -d "$NETKVM_SRC" ]; then
   echo "ERROR: NetKVM driver folder not found at $NETKVM_SRC"
